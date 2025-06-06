@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17.5
+    container_name: master_db_container
+    environment:
+      POSTGRES_DB: ved_master_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres_data:

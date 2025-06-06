@@ -1,9 +1,9 @@
 import logging
+import logging
 import sys
 
 from app.mcp_server import server
 from app.utils.tool_loader import load_all_tools_from_package
-
 
 LOG_FORMAT = (
     "\n[%(asctime)s] %(levelname)-8s | %(name)s:%(lineno)d | %(message)s"
