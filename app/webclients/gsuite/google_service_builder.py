@@ -3,13 +3,13 @@ from googleapiclient.discovery import build
 import json
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-from app.utils.constants import google_client_id_key, google_client_secret_key
+from app.utils.constants import google_client_id_key, google_client_secret_key, google_external_client
 from app.webclients.gsuite.google_scopes import SCOPES
 from app.service.external_token_service import fetch_external_token_records, update_external_token
 
 
 async def generate_authenticated_client(user_uuid: str, service_name: str, version: str):
-    tokens_data = await fetch_external_token_records(user_uuid, service_name)
+    tokens_data = await fetch_external_token_records(user_uuid, google_external_client)
     authenticated_google_client = []
     for token_data in tokens_data:
         client = await build_google_service(user_uuid, service_name, version, token_data)
@@ -21,7 +21,7 @@ async def generate_authenticated_client(user_uuid: str, service_name: str, versi
 async def build_google_service(user_uuid: str, service_name: str, version: str, token_data: dict):
     if token_data["expires_at"] and token_data["expires_at"] < datetime.datetime.utcnow():
         token_data = await refresh_google_access_token(token_data)
-        await update_external_token(token_data, service_name, user_uuid)
+        await update_external_token(token_data, google_external_client, user_uuid)
         return token_data
 
     creds = generate_google_creds(token_data)

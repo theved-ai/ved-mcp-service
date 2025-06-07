@@ -20,13 +20,13 @@ async def fetch_external_token_records(user_uuid: str, external_client: str):
 
     return decrypted_tokens_data
 
-async def update_external_token(token_data, service_name, user_uuid):
+async def update_external_token(token_data, external_client, user_uuid):
     token_data_encrypted = {
         "access_token": encrypt_token(token_data["access_token"]) if token_data["access_token"] else None,
         "refresh_token": encrypt_token(token_data["refresh_token"]) if token_data["refresh_token"] else None,
         "expires_at": token_data["expires_at"]
     }
-    await update_token_by_user_id_and_external_client(user_uuid, token_data_encrypted, service_name)
+    await update_token_by_user_id_and_external_client(user_uuid, token_data_encrypted, external_client)
 
 
 async def fetch_user_access_token(user_uuid: str, external_client: str):
