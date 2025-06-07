@@ -1,5 +1,4 @@
 import logging
-import logging
 import sys
 
 from app.mcp_server import server
