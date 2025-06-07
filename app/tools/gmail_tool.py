@@ -4,8 +4,8 @@ from typing import List, Optional, Literal
 from mcp import types
 from mcp.server.fastmcp.server import Context
 from app.mcp_server import server
-from app.webclients.gmail.gmail_client import GmailClientImpl
-from app.utils.user_client_token_util import fetch_user_uuid
+from app.webclients.gsuite.gmail.gmail_client import GmailClientImpl
+from app.utils.tool_util import fetch_user_uuid
 
 gmail_client = GmailClientImpl()
 logger = logging.getLogger(__name__)

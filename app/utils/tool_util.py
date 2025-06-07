@@ -1,8 +1,13 @@
+from mcp.server.fastmcp import Context
 import importlib
 import pkgutil
 import logging
 
 logger = logging.getLogger(__name__)
+
+async def fetch_user_uuid(ctx: Context):
+    header_dict = {k.decode().lower(): v.decode() for k, v in ctx.request_context.request.headers.raw}
+    return header_dict.get("user_uuid")
 
 def load_all_tools_from_package(package_name: str):
     """

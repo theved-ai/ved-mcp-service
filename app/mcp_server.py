@@ -1,8 +1,8 @@
 from mcp.server.fastmcp import FastMCP
 
 settings = {
-    "log_level": "DEBUG",
-    "debug": True
+    "log_level": "INFO",
+    "debug": False
 }
 
 server = FastMCP(

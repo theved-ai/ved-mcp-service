@@ -14,7 +14,7 @@ async def fetch_tokens(user_uuid: str, external_client: str):
         pool = await asyncpg.create_pool(dsn=DB_URL, min_size=1, max_size=10)
     async with pool.acquire() as conn:
         query = """
-            SELECT access_token, refresh_token, expires_at FROM external_tokens
+            SELECT access_token, refresh_token, expires_at, metadata FROM external_tokens
             WHERE user_uuid = $1 AND external_client = $2
         """
         rows = await conn.fetch(query, user_uuid, external_client)
@@ -24,12 +24,14 @@ async def fetch_tokens(user_uuid: str, external_client: str):
         final_result = [{
             "access_token": row["access_token"],
             "refresh_token": row["refresh_token"],
-            "expires_at": row["expires_at"]
+            "expires_at": row["expires_at"],
+            "metadata": row["metadata"]
         } for row in rows]
 
         return final_result
 
-async def update_token_by_user(user_uuid: str, token_data: dict, external_client: str):
+
+async def update_token_by_user_id_and_external_client(user_uuid: str, token_data: dict, external_client: str):
     global pool
     if pool is None:
         pool = await asyncpg.create_pool(dsn=DB_URL, min_size=1, max_size=10)
@@ -42,4 +44,4 @@ async def update_token_by_user(user_uuid: str, token_data: dict, external_client
                 updated_at = NOW()
             WHERE user_uuid = $4 AND external_client = $5
         """
-        await conn.execute(query, token_data["access_token"], token_data["refresh_token"], token_data["expiry"], user_uuid, external_client)
+        await conn.execute(query, token_data["access_token"], token_data["refresh_token"], token_data["expires_at"], user_uuid, external_client)

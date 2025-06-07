@@ -3,23 +3,24 @@ import base64
 import logging
 from email.mime.text import MIMEText
 from typing import List, Optional, Literal, Any
-
-from app.utils.gmail_util import (
+from app.decorators.retry_decorator import async_retryable
+from app.webclients.gsuite.gmail.gmail_util import (
     extract_message_body,
     extract_headers,
     generate_gmail_web_url,
 )
-from app.webclients.gmail.google_service_builder import generate_authenticated_client
-from app.webclients.gmail.base import GmailClientBase
+from app.webclients.gsuite.google_service_builder import generate_authenticated_client
+from app.webclients.gsuite.gmail.base import GmailClientBase
+from app.utils.constants import gmail_service_name, gmail_service_version
+
 
 logger = logging.getLogger(__name__)
-service_name = 'gmail'
-version = 'v1'
 
 class GmailClientImpl(GmailClientBase):
 
+    @async_retryable()
     async def search_messages(self, user_uuid: str, query: str, page_size: int = 10) -> Any:
-        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, service_name, version)
+        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, gmail_service_name, gmail_service_version)
 
         for service in gmail_authenticated_clients:
             try:
@@ -32,8 +33,9 @@ class GmailClientImpl(GmailClientBase):
                 logger.error(f"Gmail API error searching messages: {e}", exc_info=True)
                 raise
 
+    @async_retryable()
     async def get_message_content(self, user_uuid: str, message_id: str) -> Any:
-        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, service_name, version)
+        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, gmail_service_name, gmail_service_version)
 
         for service in gmail_authenticated_clients:
             try:
@@ -74,8 +76,9 @@ class GmailClientImpl(GmailClientBase):
                 logger.error(f"Gmail API error getting message content: {e}", exc_info=True)
                 raise
 
+    @async_retryable()
     async def get_messages_content_batch(self, user_uuid: str, message_ids: List[str], format: Literal["full", "metadata"] = "full") -> Any:
-        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, service_name, version)
+        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, gmail_service_name, gmail_service_version)
 
         for service in gmail_authenticated_clients:
             output_messages = []
@@ -122,8 +125,9 @@ class GmailClientImpl(GmailClientBase):
                     output_messages.append({"id": mid, "error": str(e)})
             return output_messages
 
+    @async_retryable()
     async def send_message(self, user_uuid: str, to: str, subject: str, body: str) -> Any:
-        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, service_name, version)
+        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, gmail_service_name, gmail_service_version)
 
         for service in gmail_authenticated_clients:
             try:
@@ -140,8 +144,9 @@ class GmailClientImpl(GmailClientBase):
                 logger.error(f"Gmail API error sending message: {e}", exc_info=True)
                 raise
 
+    @async_retryable()
     async def draft_message(self, user_uuid: str, subject: str, body: str, to: Optional[str] = None) -> Any:
-        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, service_name, version)
+        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, gmail_service_name, gmail_service_version)
 
         for service in gmail_authenticated_clients:
             try:
@@ -159,8 +164,9 @@ class GmailClientImpl(GmailClientBase):
                 logger.error(f"Gmail API error creating draft: {e}", exc_info=True)
                 raise
 
+    @async_retryable()
     async def get_thread_content(self, user_uuid: str, thread_id: str) -> Any:
-        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, service_name, version)
+        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, gmail_service_name, gmail_service_version)
 
         for service in gmail_authenticated_clients:
             try:
@@ -184,8 +190,9 @@ class GmailClientImpl(GmailClientBase):
                 logger.error(f"Gmail API error getting thread content: {e}", exc_info=True)
                 raise
 
+    @async_retryable()
     async def list_labels(self, user_uuid: str) -> Any:
-        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, service_name, version)
+        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, gmail_service_name, gmail_service_version)
 
         for service in gmail_authenticated_clients:
             try:
@@ -197,10 +204,11 @@ class GmailClientImpl(GmailClientBase):
                 logger.error(f"Gmail API error listing labels: {e}", exc_info=True)
                 raise
 
+    @async_retryable()
     async def manage_label(self, user_uuid: str, action: Literal["create", "update", "delete"], name: Optional[str] = None,
                            label_id: Optional[str] = None, label_list_visibility: Literal["labelShow", "labelHide"] = "labelShow",
                            message_list_visibility: Literal["show", "hide"] = "show") -> Any:
-        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, service_name, version)
+        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, gmail_service_name, gmail_service_version)
 
         for service in gmail_authenticated_clients:
             try:
@@ -242,9 +250,10 @@ class GmailClientImpl(GmailClientBase):
                 logger.error(f"Gmail API error managing label: {e}", exc_info=True)
                 raise
 
+    @async_retryable()
     async def modify_message_labels(self, user_uuid: str, message_id: str, add_label_ids: Optional[List[str]] = None,
                                     remove_label_ids: Optional[List[str]] = None) -> Any:
-        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, service_name, version)
+        gmail_authenticated_clients = await generate_authenticated_client(user_uuid, gmail_service_name, gmail_service_version)
 
         for service in gmail_authenticated_clients:
             try:

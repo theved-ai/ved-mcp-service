@@ -1,3 +1,5 @@
+import os
+
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 import hashlib
 
@@ -10,3 +12,9 @@ def decrypt_token(db_token: str) -> str:
     aesgcm = AESGCM(SECRET_KEY)
     decrypted = aesgcm.decrypt(nonce, encrypted, None)
     return decrypted.decode("utf-8")
+
+def encrypt_token(token: str) -> str:
+    aesgcm = AESGCM(SECRET_KEY)
+    nonce = os.urandom(12)
+    encrypted = aesgcm.encrypt(nonce, token.encode(), None)
+    return (nonce + encrypted).hex()
