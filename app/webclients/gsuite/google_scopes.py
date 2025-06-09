@@ -39,6 +39,15 @@ CHAT_READONLY_SCOPE = 'https://www.googleapis.com/auth/chat.messages.readonly'
 CHAT_WRITE_SCOPE = 'https://www.googleapis.com/auth/chat.messages'
 CHAT_SPACES_SCOPE = 'https://www.googleapis.com/auth/chat.spaces'
 
+# Google tasks API scopes
+TASKS_EDIT_SCOPE = 'https://www.googleapis.com/auth/tasks'
+TASKS_READONLY_SCOPE = 'https://www.googleapis.com/auth/tasks.readonly'
+
+TASKS_SCOPES = [
+    TASKS_EDIT_SCOPE,
+    TASKS_READONLY_SCOPE
+]
+
 # Base OAuth scopes required for user identification
 BASE_SCOPES = [
     USERINFO_EMAIL_SCOPE,
@@ -80,4 +89,4 @@ CHAT_SCOPES = [
 ]
 
 # Combined scopes for all supported Google Workspace operations
-SCOPES = list(set(BASE_SCOPES + CALENDAR_SCOPES + DRIVE_SCOPES + GMAIL_SCOPES + DOCS_SCOPES + CHAT_SCOPES))
+SCOPES = list(set(BASE_SCOPES + CALENDAR_SCOPES + DRIVE_SCOPES + GMAIL_SCOPES + DOCS_SCOPES + CHAT_SCOPES + TASKS_SCOPES))

@@ -14,9 +14,19 @@ logger = logging.getLogger(__name__)
 @server.tool(
     name="search_gmail_messages",
     description=(
-            "Search messages in user's Gmail for a given query string.\n\n"
+            "Search messages in the user's Gmail using a query string. "
+            "Build your `query` parameter using standard Gmail search operators to refine results:\n\n"
+            "**How to Compose Your Query:**\n"
+            "- **Search for an exact phrase:** Enclose the phrase in quotation marks, e.g., `\"meeting details\"`.\n"
+            "- **Limit to subject line:** Use `subject:` followed by your term, e.g., `subject:meeting`.\n"
+            "- **Filter by date:** Use `before:` or `after:` followed by a date, e.g., `before:2024/01/01`.\n"
+            "- **Search by sender:** Use `from:` followed by the sender’s email, e.g., `from:john.doe@example.com`.\n"
+            "- **Filter by label:** Use `label:` followed by the label name, e.g., `label:work`.\n"
+            "- **Search for attachments:** Use `filename:` (e.g., `filename:pdf`) or `has:attachment` for any attachment.\n"
+            "- **Filter unread/starred/flagged:** Use `is:unread`, `is:starred`, or `is:flagged`.\n"
+            "- **Combine operators:** Use spaces to require all terms, `OR` for alternatives, and `-` to exclude (e.g., `from:cars24 \"exit formalities\" -is:read`).\n\n"
             "**Parameters:**\n"
-            "- `query` (str): Gmail search query string (supports standard Gmail search syntax).\n"
+            "- `query` (str): Gmail search query string (must use Gmail search syntax).\n"
             "- `page_size` (int): Max number of results (default 10).\n\n"
             "**Returns:**\n"
             "- List of matching message IDs."
