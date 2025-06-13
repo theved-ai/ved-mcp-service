@@ -2,6 +2,8 @@ import os
 import asyncpg
 from dotenv import load_dotenv
 
+from app.dto.chunk_db_record import ChunkDbRecord
+
 load_dotenv()
 DB_URL = os.getenv("DATABASE_URL")
 
@@ -45,3 +47,15 @@ async def update_token_by_user_id_and_external_client(user_uuid: str, token_data
             WHERE user_uuid = $4 AND external_client = $5
         """
         await conn.execute(query, token_data["access_token"], token_data["refresh_token"], token_data["expires_at"], user_uuid, external_client)
+
+async def fetch_chunks(chunk_ids: list[str]) -> list[ChunkDbRecord]:
+    global pool
+    if pool is None:
+        pool = await asyncpg.create_pool(dsn=DB_URL, min_size=1, max_size=10)
+    async with pool.acquire() as conn:
+        query = """
+            select chunk_content from chunked_data
+            where uuid = ANY($1)
+        """
+        rows = await conn.fetch(query, chunk_ids)
+        return [ChunkDbRecord(chunk_content=row['chunk_content']) for row in rows]

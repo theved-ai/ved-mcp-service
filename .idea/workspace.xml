@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="31ce6777-a100-4b7e-a09c-f296f05978eb" name="Changes" comment="added gcalendar tool with retry">
-      <change beforePath="$PROJECT_DIR$/app/utils/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/token_security_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/token_security_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/webclients/gsuite/gcalendar/gcal_util.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/webclients/gsuite/google_scopes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/gsuite/google_scopes.py" afterDir="false" />
+    <list default="true" id="31ce6777-a100-4b7e-a09c-f296f05978eb" name="Changes" comment="added gtasks tool with retry">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +42,7 @@
     &quot;Application.McpserverApplication.executor&quot;: &quot;Debug&quot;,
     &quot;Python.main.executor&quot;: &quot;Debug&quot;,
     &quot;Python.token_encryption.executor&quot;: &quot;Run&quot;,
-    &quot;Python.token_security_util.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.token_security_util.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -265,7 +262,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749301261956</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="added gtasks tool with retry">
+      <option name="closed" value="true" />
+      <created>1749471234783</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1749471234783</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -276,7 +281,8 @@
     <MESSAGE value="added gmail tool" />
     <MESSAGE value="added gmail tool with retry" />
     <MESSAGE value="added gcalendar tool with retry" />
-    <option name="LAST_COMMIT_MESSAGE" value="added gcalendar tool with retry" />
+    <MESSAGE value="added gtasks tool with retry" />
+    <option name="LAST_COMMIT_MESSAGE" value="added gtasks tool with retry" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -376,6 +382,11 @@
           <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
           <line>52</line>
           <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/webclients/gsuite/gtasks/gtasks_client.py</url>
+          <line>17</line>
+          <option name="timeStamp" value="52" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
