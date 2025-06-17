@@ -45,5 +45,8 @@ class QdrantVectorClient(VectorClientBase):
             chunk_data_source=vector_record.payload['data_input_source'],
             chunk_ingested_at=vector_record.payload['ingestion_timestamp'],
             content_timestamp=vector_record.payload['content_timestamp'],
-            metadata=vector_record.payload['metadata'],
+            metadata={
+                k: v for k, v in vector_record.payload.items()
+                if k not in {'chunk_id', 'data_input_source', 'ingestion_timestamp', 'content_timestamp'}
+            }
         ) for vector_record in matching_vectors.points]

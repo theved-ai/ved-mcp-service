@@ -14,5 +14,5 @@ def from_pensieve_req(req: PensieveRequest, vector: list[float]):
 class VectorClientRequest(BaseModel):
     collection_name: str
     query_vector: list[float]
-    max_matching_records: int = 5
+    max_matching_records: int = 100
     query_metadata: Optional[dict[str, Any]]

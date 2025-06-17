@@ -1,3 +1,5 @@
+from typing import Any, Optional
+
 from app.dto.pensieve_request import PensieveRequest
 from app.utils.tool_util import fetch_user_uuid
 from app.mcp_server import server
@@ -13,14 +15,19 @@ pensieve_service = PensieveService()
 @server.tool(
     name="search_pensieve_chunks",
     description=(
-            "Use this tool to search the user's own ingested data for relevant information, facts, or content. "
-            "Pensieve stores and indexes the user's knowledge from various sources—including emails, meeting transcripts, Slack messages, YouTube video transcripts, web pages, uploaded PDF files, and more. "
-            "Whenever a user's request could be answered from their personal data, use this tool to find matching text chunks.\n\n"
+            "Use this tool to search the user's ingested data (emails, meetings, Slack, YouTube transcripts, web pages, PDFs, etc.) for relevant information, facts, or content.\n\n"
+            "**How to use:**\n"
+            "- Always pass the user's query in `user_prompt`.\n"
+            "- When the user's request indicates a specific data source or type (e.g., 'meeting', 'Slack', 'YouTube', 'web page', 'PDF'), **populate the `metadata` field with the correct filter(s)**:\n"
+            "    - For meetings, set `metadata` to `{ \"data_input_source\": \"meet_transcript\" }`.\n"
+            "    - For Slack messages, set `metadata` to `{ \"data_input_source\": \"slack\" }`.\n"
+            "    - For YouTube transcripts, set `metadata` to `{ \"data_input_source\": \"yt_transcript\" }`.\n"
+            "    - For web pages, set `metadata` to `{ \"data_input_source\": \"web_page\" }`.\n"
+            "    - For PDFs, set `metadata` to `{ \"data_input_source\": \"pdf\" }`.\n"
+            "- If the prompt mentions a time or date, include it as `content_timestamp` (in ISO8601, IST timezone) in `metadata`.\n\n"
             "**Parameters:**\n"
-            "- `user_prompt` (str): The user's question, query, or search phrase describing what they want to find in their data.\n"
-            "- `metadata` (optional, dict): Optional filters or context to narrow the search. Example keys include:\n"
-            "    - `data_input_source` (str): Data source type (e.g., 'user_typed', 'meet_transcript', 'yt_transcript', 'web_page', 'pdf', 'slack').\n"
-            "    - `content_timestamp` (str): Filter by content creation date/time (ISO8601) in IST timezone.\n"
+            "- `user_prompt` (str): The user's question or search phrase.\n"
+            "- `metadata` (optional, dict): Context or filters such as data source or timestamp.\n\n"
             "**Returns:**\n"
             "- List of matching content chunks, with data sources, timestamps, and any available metadata."
     )
@@ -28,7 +35,7 @@ pensieve_service = PensieveService()
 async def search_pensieve_chunks(
         ctx: Context,
         user_prompt: str,
-        metadata: dict = None,
+        metadata: Optional[dict[str, Any]] = None,
 ) -> types.CallToolResult:
     user_id = await fetch_user_uuid(ctx)
     req = PensieveRequest(user_prompt=user_prompt, user_id=user_id, metadata=metadata)

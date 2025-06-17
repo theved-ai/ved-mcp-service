@@ -54,8 +54,8 @@ async def fetch_chunks(chunk_ids: list[str]) -> list[ChunkDbRecord]:
         pool = await asyncpg.create_pool(dsn=DB_URL, min_size=1, max_size=10)
     async with pool.acquire() as conn:
         query = """
-            select chunk_content from chunked_data
+            select uuid, chunk_content from chunked_data
             where uuid = ANY($1)
         """
         rows = await conn.fetch(query, chunk_ids)
-        return [ChunkDbRecord(chunk_content=row['chunk_content']) for row in rows]
+        return [ChunkDbRecord(chunk_content=row['chunk_content'], chunk_id=str(row['uuid'])) for row in rows]
