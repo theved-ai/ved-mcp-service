@@ -13,7 +13,7 @@ class SlackClientImpl(SlackClient):
     @async_retryable()
     async def list_conversations(self, token: str) -> AsyncSlackResponse:
         try:
-            return await self.client.conversations_list(token=token, types=["public_channel", "private_channel"])
+            return await self.client.conversations_list(token=token, types=["public_channel", "private_channel", "mpim", "im"])
         except SlackApiError as e:
             logger.error(f"Slack API error in list_conversations: {e}")
             raise
@@ -153,3 +153,17 @@ class SlackClientImpl(SlackClient):
         except Exception:
             logger.exception("Unexpected error in get_conversation_members")
             raise
+
+
+    @async_retryable()
+    async def get_dm_channel_with_user(self, token: str, user_id: str) -> str:
+        try:
+            response = await self.client.conversations_open(users=[user_id], token=token)
+            return response["channel"]["id"]
+        except SlackApiError as e:
+            logger.error(f"Slack API error in get_dm_channel_with_user: {e}")
+            raise
+        except Exception:
+            logger.exception("Unexpected error in get_dm_channel_with_user")
+            raise
+

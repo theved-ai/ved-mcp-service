@@ -10,34 +10,48 @@ slack_client = SlackClientImpl()
 client_name = "slack"
 
 @server.tool(
-    name="list_channel",
+    name="list_conversations",
     description=(
-            "List all Slack channels (both public and private) that the bot has access to for the current user.\n\n"
-            "Returns a mapping of Slack bot tokens to their accessible channels."
+            "List all Slack conversations the bot has access to for the current user.\n\n"
+            "Includes public channels, private channels, group DMs (mpim), and direct messages (im).\n"
+            "Returns a mapping of Slack bot tokens to their accessible conversation types and names."
     )
 )
-async def list_channels(ctx: Context) -> types.CallToolResult:
+async def list_conversations(ctx: Context) -> types.CallToolResult:
     bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
+
     for bot_token in bot_tokens:
         response = await slack_client.list_conversations(bot_token)
         channels = response.get("channels", [])
-        public = []
-        private = []
+        categorized = {
+            "Public Channels": [],
+            "Private Channels": [],
+            "Group DMs (mpim)": [],
+            "Direct Messages (im)": []
+        }
+
         for c in channels:
-            channel_info = f"- #{c['name']} (ID: {c['id']})"
-            if c.get("is_private"):
-                private.append(channel_info)
+            name = c.get("name") or c.get("user") or c.get("id")
+            channel_info = f"- {name} (ID: {c['id']})"
+
+            if c.get("is_im"):
+                categorized["Direct Messages (im)"].append(channel_info)
+            elif c.get("is_mpim"):
+                categorized["Group DMs (mpim)"].append(channel_info)
+            elif c.get("is_private"):
+                categorized["Private Channels"].append(channel_info)
             else:
-                public.append(channel_info)
-        output[bot_token] = (
-            f"Public channels:\n{chr(10).join(public) or 'None'}\n\n"
-            f"Private channels:\n{chr(10).join(private) or 'None'}"
+                categorized["Public Channels"].append(channel_info)
+
+        output[bot_token] = "\n\n".join(
+            f"{k}:\n{chr(10).join(v) or 'None'}" for k, v in categorized.items()
         )
-    text_str = json.dumps(output)
+
     return types.CallToolResult(
-        content=[types.TextContent(type="text", text=text_str)]
+        content=[types.TextContent(type="text", text=json.dumps(output))]
     )
+
 
 @server.tool(
     name="get_channel_info",
@@ -245,3 +259,26 @@ async def get_channel_members(ctx: Context, channel_id: str) -> types.CallToolRe
     return types.CallToolResult(
         content=[types.TextContent(type="text", text=json.dumps(output))]
     )
+
+@server.tool(
+    name="get_dm_channel_with_user",
+    description=(
+            "Retrieve the Slack DM channel ID between the bot and a specific user. "
+            "This is useful for fetching or sending direct messages to users.\n\n"
+            "**Parameters:**\n"
+            "- `user_id`: Slack user ID of the person to open a DM with."
+    )
+)
+async def get_dm_channel_with_user(ctx: Context, user_id: str) -> types.CallToolResult:
+    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    output = {}
+    for bot_token in bot_tokens:
+        try:
+            dm_channel_id = await slack_client.get_dm_channel_with_user(bot_token, user_id)
+            output[bot_token] = f"DM channel ID with user {user_id}: {dm_channel_id}"
+        except Exception as e:
+            output[bot_token] = f"Failed to retrieve DM channel ID: {str(e)}"
+    return types.CallToolResult(
+        content=[types.TextContent(type="text", text=json.dumps(output))]
+    )
+

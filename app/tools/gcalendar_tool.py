@@ -42,7 +42,7 @@ async def list_google_calendars(ctx: Context) -> types.CallToolResult:
             "- `calendar_id` (str): Calendar ID (default: 'primary').\n"
             "- `time_min` (str, optional): RFC3339 start datetime. If omitted, defaults to now.\n"
             "- `time_max` (str, optional): RFC3339 end datetime. If omitted, gets upcoming events only.\n"
-            "- `max_results` (int): Max number of results (default 25).\n\n"
+            "- `max_results` (int): Max number of results (default 30).\n\n"
             "**Returns:**\n"
             "- List of event summaries, times, and links."
     )

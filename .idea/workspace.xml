@@ -4,8 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="31ce6777-a100-4b7e-a09c-f296f05978eb" name="Changes" comment="added gtasks tool with retry">
+    <list default="true" id="31ce6777-a100-4b7e-a09c-f296f05978eb" name="Changes" comment="poc to check if it can fetch complete meet transcript">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tools/gcalendar_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tools/gcalendar_tool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tools/pensieve_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tools/pensieve_tool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tools/slack_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tools/slack_tool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/gsuite/gtasks/gtasks_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/gsuite/gtasks/gtasks_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/pensieve/qdrant_vector_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/pensieve/qdrant_vector_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/slack/slack_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/slack/slack_client.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,12 +49,13 @@
     &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Application.McpserverApplication.executor&quot;: &quot;Debug&quot;,
     &quot;Python.main.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.mcp-server.executor&quot;: &quot;Debug&quot;,
     &quot;Python.token_encryption.executor&quot;: &quot;Run&quot;,
-    &quot;Python.token_security_util.executor&quot;: &quot;Run&quot;,
+    &quot;Python.token_security_util.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/a36469/srccode/ved-mcp-service/app&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/a36469/srccode/ved-mcp-service/app/config&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.171875&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.26726058&quot;,
@@ -55,6 +64,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/config" />
       <recent name="$PROJECT_DIR$/app/webclients/gmail" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -64,7 +74,7 @@
       <recent name="$PROJECT_DIR$/app" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.mcp-server">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="ved-mcp-service" />
       <method v="2">
@@ -100,7 +110,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="mcp-server" type="PythonConfigurationType" factoryName="Python">
       <module name="mcpserver" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -190,9 +200,12 @@
       <option name="docutils_open_in_browser" value="false" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.mcp-server" />
+      <item itemvalue="Python.token_security_util" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.token_security_util" />
       </list>
     </recent_temporary>
@@ -270,7 +283,23 @@
       <option name="project" value="LOCAL" />
       <updated>1749471234783</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="added pensieve tool">
+      <option name="closed" value="true" />
+      <created>1749832264830</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1749832264830</updated>
+    </task>
+    <task id="LOCAL-00010" summary="poc to check if it can fetch complete meet transcript">
+      <option name="closed" value="true" />
+      <created>1750151019342</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1750151019342</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -282,7 +311,9 @@
     <MESSAGE value="added gmail tool with retry" />
     <MESSAGE value="added gcalendar tool with retry" />
     <MESSAGE value="added gtasks tool with retry" />
-    <option name="LAST_COMMIT_MESSAGE" value="added gtasks tool with retry" />
+    <MESSAGE value="added pensieve tool" />
+    <MESSAGE value="poc to check if it can fetch complete meet transcript" />
+    <option name="LAST_COMMIT_MESSAGE" value="poc to check if it can fetch complete meet transcript" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -307,7 +338,7 @@
           <line>65</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/ved/mcpserver/client/slack/SlackClientImpl.java</url>
           <line>29</line>
           <properties>
@@ -315,12 +346,12 @@
           </properties>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/ved/mcpserver/tool/impl/SlackToolServiceImpl.java</url>
           <line>36</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/ved/mcpserver/client/slack/SlackClientImpl.java</url>
           <line>29</line>
           <properties>
@@ -328,17 +359,17 @@
           </properties>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>jar://$MAVEN_REPOSITORY$/org/springframework/ai/spring-ai-autoconfigure-mcp-server/1.0.0/spring-ai-autoconfigure-mcp-server-1.0.0-sources.jar!/org/springframework/ai/mcp/server/autoconfigure/McpWebFluxServerAutoConfiguration.java</url>
           <line>78</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>jar://$MAVEN_REPOSITORY$/org/springframework/ai/spring-ai-autoconfigure-mcp-server/1.0.0/spring-ai-autoconfigure-mcp-server-1.0.0-sources.jar!/org/springframework/ai/mcp/server/autoconfigure/McpServerAutoConfiguration.java</url>
           <line>309</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>jar://$MAVEN_REPOSITORY$/org/springframework/ai/spring-ai-autoconfigure-mcp-server/1.0.0/spring-ai-autoconfigure-mcp-server-1.0.0-sources.jar!/org/springframework/ai/mcp/server/autoconfigure/McpServerAutoConfiguration.java</url>
           <line>376</line>
           <option name="timeStamp" value="19" />
@@ -349,18 +380,8 @@
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>19</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>37</line>
-          <option name="timeStamp" value="42" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
-          <line>37</line>
+          <line>42</line>
           <option name="timeStamp" value="45" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -370,23 +391,98 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
-          <line>44</line>
+          <line>48</line>
           <option name="timeStamp" value="49" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/webclients/gsuite/gmail/gmail_client.py</url>
           <line>27</line>
           <option name="timeStamp" value="50" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
-          <line>52</line>
+          <line>50</line>
           <option name="timeStamp" value="51" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/webclients/gsuite/gtasks/gtasks_client.py</url>
           <line>17</line>
           <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
+          <line>27</line>
+          <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
+          <line>57</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
+          <line>29</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>144</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>126</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>106</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>64</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>170</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>202</line>
+          <option name="timeStamp" value="63" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>227</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>248</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/webclients/pensieve/qdrant_vector_client.py</url>
+          <line>44</line>
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="71" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
+          <line>46</line>
+          <option name="timeStamp" value="72" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

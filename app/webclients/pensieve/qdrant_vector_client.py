@@ -1,25 +1,37 @@
+from datetime import datetime
+from typing import Any
 from typing import List
 
 from qdrant_client.async_qdrant_client import AsyncQdrantClient
-from qdrant_client.http.models import Filter, FieldCondition, MatchValue
+from qdrant_client.models import FieldCondition, Filter, Range
+
 from app.dto.vector_client_request import VectorClientRequest
 from app.dto.vector_client_response import VectorClientResponse
 from app.utils.constants import QDRANT_GRPC_URL, THRESHOLD_VECTOR_MATCHING_SCORE
 from app.webclients.pensieve.vector_client_base import VectorClientBase
 
 
-def _generate_qdrant_query(query_metadata: dict) -> Filter | None:
+def parse_iso8601_to_unix(value: str) -> float:
+    return datetime.fromisoformat(value).timestamp()
+
+def _generate_qdrant_query(query_metadata: dict[str, Any]) -> Filter | None:
     if not query_metadata:
         return None
 
-    conditions = [
-        FieldCondition(
-            key=key,
-            match=MatchValue(value=value)
-        )
-        for key, value in query_metadata.items()
-        if value is not None
-    ]
+    conditions = []
+    for key, value in query_metadata.items():
+        if isinstance(value, dict):  # e.g. {"gte": ..., "lte": ...}
+            range_kwargs = {}
+            for k, v in value.items():
+                if isinstance(v, str):
+                    try:
+                        v = parse_iso8601_to_unix(v)
+                    except ValueError:
+                        continue  # skip invalid format
+                range_kwargs[k] = v
+            conditions.append(FieldCondition(key=key, range=Range(**range_kwargs)))
+        elif value is not None:
+            conditions.append(FieldCondition(key=key, match={"value": value}))
 
     return Filter(must=conditions)
 

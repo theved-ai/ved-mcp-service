@@ -10,4 +10,4 @@ google_tasks_service_name = "tasks"
 google_tasks_service_version = "v1"
 EMBEDDING_MODEL_NAME= 'BAAI/bge-large-en-v1.5'
 QDRANT_GRPC_URL='http://localhost:6333'
-THRESHOLD_VECTOR_MATCHING_SCORE=0.1
+THRESHOLD_VECTOR_MATCHING_SCORE=0.5

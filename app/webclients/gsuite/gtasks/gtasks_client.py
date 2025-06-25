@@ -94,6 +94,8 @@ class GoogleTasksClientImpl(GoogleTasksClientBase):
         if notes:
             body["notes"] = notes
         if due:
+            # Timestamp is ignored even if sent. Limitation by google
+            # Ref: https://googleapis.github.io/google-api-python-client/docs/dyn/tasks_v1.tasks.html#insert
             body["due"] = due
         if status:
             body["status"] = status
