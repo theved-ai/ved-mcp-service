@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="31ce6777-a100-4b7e-a09c-f296f05978eb" name="Changes" comment="resolved expired refresh token issue for google auth">
+    <list default="true" id="31ce6777-a100-4b7e-a09c-f296f05978eb" name="Changes" comment="updated init sql script">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/init.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db/db_processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db/db_processor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/tool_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/tool_util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,30 +39,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Application.McpserverApplication.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.mcp-server.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.token_encryption.executor&quot;: &quot;Run&quot;,
-    &quot;Python.token_security_util.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/a36469/srccode/ved-mcp-service/app/config&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.171875&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.26726058&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.McpserverApplication.executor": "Debug",
+    "Python.main.executor": "Debug",
+    "Python.mcp-server.executor": "Debug",
+    "Python.token_encryption.executor": "Run",
+    "Python.token_security_util.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/a36469/srccode/ved-mcp-service/app/enums",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.171875",
+    "project.structure.side.proportion": "0.26726058",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/enums" />
       <recent name="$PROJECT_DIR$/app/config" />
       <recent name="$PROJECT_DIR$/app/webclients/gmail" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/webclients/pensieve/text_extraction" />
       <recent name="$PROJECT_DIR$/app/webclients/gsuite/gmail" />
       <recent name="$PROJECT_DIR$/app/service" />
       <recent name="$PROJECT_DIR$/app/webclients/gsuite" />
@@ -300,8 +304,27 @@
       <option name="project" value="LOCAL" />
       <updated>1750858173195</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="updated init sql script">
+      <option name="closed" value="true" />
+      <created>1751144212209</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1751144212209</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="slack tool added" />
@@ -315,7 +338,8 @@
     <MESSAGE value="added pensieve tool" />
     <MESSAGE value="poc to check if it can fetch complete meet transcript" />
     <MESSAGE value="resolved expired refresh token issue for google auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="resolved expired refresh token issue for google auth" />
+    <MESSAGE value="updated init sql script" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated init sql script" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

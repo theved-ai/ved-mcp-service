@@ -2,6 +2,7 @@ import os
 import asyncpg
 from dotenv import load_dotenv
 
+from app.dto.chat_message_db_record import ChatMessageDbRecord
 from app.dto.chunk_db_record import ChunkDbRecord
 
 load_dotenv()
@@ -59,3 +60,16 @@ async def fetch_chunks(chunk_ids: list[str]) -> list[ChunkDbRecord]:
         """
         rows = await conn.fetch(query, chunk_ids)
         return [ChunkDbRecord(chunk_content=row['chunk_content'], chunk_id=str(row['uuid'])) for row in rows]
+
+async def fetch_message_data(message_ids: list[str]) -> list[ChatMessageDbRecord]:
+    global pool
+    if pool is None:
+        pool = await asyncpg.create_pool(dsn=DB_URL, min_size=1, max_size=10)
+    async with pool.acquire() as conn:
+        query = """
+            select message_id, conversation_id, content, tools_called, model_metadata_id, created_at, updated_at
+            from messages
+            where message_id = ANY($1)
+        """
+        rows = await conn.fetch(query, message_ids)
+        return [ChatMessageDbRecord(**dict(row)) for row in rows]

@@ -9,7 +9,7 @@ async def fetch_user_uuid(ctx: Context):
     header_dict = {k.decode().lower(): v.decode() for k, v in ctx.request_context.request.headers.raw}
     return header_dict.get("user_uuid")
 
-def load_all_tools_from_package(package_name: str):
+def load_package(package_name: str):
     """
     Dynamically imports all modules in a given package to trigger decorator registration.
     """
