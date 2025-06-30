@@ -1,13 +1,12 @@
 import asyncio
-import logging
 from typing import List, Optional, Any
 
+from app.config.logging_config import logger
 from app.decorators.retry_decorator import async_retryable
-from app.webclients.gsuite.google_service_builder import generate_authenticated_client
+from app.utils.application_constants import gcalendar_service_name, gcalendar_service_version
 from app.webclients.gsuite.gcalendar.base import GoogleCalendarClientBase
-from app.utils.constants import gcalendar_service_name, gcalendar_service_version
+from app.webclients.gsuite.google_service_builder import generate_authenticated_client
 
-logger = logging.getLogger(__name__)
 
 class GoogleCalendarClientImpl(GoogleCalendarClientBase):
 

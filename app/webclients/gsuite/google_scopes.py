@@ -1,13 +1,5 @@
-"""
-Google Workspace MCP Configuration
-
-This module centralizes configuration variables for Google Workspace integration,
-including OAuth scopes and the state map for authentication flows.
-"""
-import logging
 from typing import Dict
 
-logger = logging.getLogger(__name__)
 
 # Temporary map to associate OAuth state with MCP session ID
 # This should ideally be a more robust cache in a production system (e.g., Redis)

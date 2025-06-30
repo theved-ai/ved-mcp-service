@@ -1,18 +1,20 @@
 from typing import Any, Optional
 
-from app.dto.search_chat_req import SearchChatRequest
-from app.dto.pensieve_request import PensieveRequest
-from app.utils.tool_util import fetch_user_uuid
-from app.mcp_server import server
 from mcp import types
 from mcp.server.fastmcp.server import Context
-import logging
 
+from app.decorators.try_catch_decorator import try_catch_wrapper_no_raised_exception
+from app.dto.pensieve_request import PensieveRequest
+from app.dto.search_chat_req import SearchChatRequest
+from app.mcp_server import server
+from app.utils.app_utils import failed_tool_response
+from app.utils.application_constants import pensieve_search_failed, pensieve_search_chat_failed
+from app.utils.tool_util import fetch_user_uuid
 from app.webclients.pensieve.pensieve_service import PensieveService
 
-logger = logging.getLogger(__name__)
 pensieve_service = PensieveService()
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, pensieve_search_failed))
 @server.tool(
     name="search_matching_chunks",
     description=("""
@@ -46,14 +48,11 @@ async def search_matching_chunks(
 ) -> types.CallToolResult:
     user_id = await fetch_user_uuid(ctx)
     req = PensieveRequest(user_prompt=user_prompt, user_id=user_id, metadata=metadata)
-    try:
-        results = await pensieve_service.fetch_matching_chunks(req)
-        return await generate_tool_response(results)
-    except Exception as e:
-        logger.exception("Error searching Pensieve chunks")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    results = await pensieve_service.fetch_matching_chunks(req)
+    return await generate_tool_response(results)
 
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, pensieve_search_chat_failed))
 @server.tool(
     name="fetch_recent_chat_messages",
     description=(
@@ -75,12 +74,8 @@ async def search_chats(
 ) -> types.CallToolResult:
     user_id = await fetch_user_uuid(ctx)
     req = SearchChatRequest(user_id=user_id, conversation_id=conversation_id, max_messages=max_messages)
-    try:
-        results = await pensieve_service.search_chat(req)
-        return await generate_tool_response(results)
-    except Exception as e:
-        logger.exception("Error searching Pensieve chunks")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    results = await pensieve_service.search_chat(req)
+    return await generate_tool_response(results)
 
 
 async def generate_tool_response(results):

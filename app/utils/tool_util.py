@@ -18,3 +18,8 @@ def load_package(package_name: str):
         if not is_pkg:
             logger.debug(f"Importing tool module: {name}")
             importlib.import_module(name)
+
+async def init_db():
+    await init_pg_pool(db_url)
+    yield
+    await close_pg_pool()

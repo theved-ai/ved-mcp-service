@@ -10,7 +10,7 @@ from qdrant_client.http.models import FieldCondition, Filter, MatchAny, MatchVal
 from app.dto.vector_client_request import VectorClientRequest
 from app.dto.vector_client_response import VectorClientResponse
 from app.enums.input_data_source import InputDataSource
-from app.utils.constants import QDRANT_GRPC_URL, THRESHOLD_VECTOR_MATCHING_SCORE
+from app.utils.application_constants import QDRANT_GRPC_URL, THRESHOLD_VECTOR_MATCHING_SCORE
 
 
 def _ts(val: str | float | int) -> float:

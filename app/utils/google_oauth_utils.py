@@ -2,6 +2,8 @@ import os
 
 from google_auth_oauthlib.flow import InstalledAppFlow
 
+from app.dto.token_metadata import TokenMetadata
+
 
 def run_local_oauth_flow(scopes):
     """
@@ -31,8 +33,8 @@ def run_local_oauth_flow(scopes):
         scopes=scopes
     )
     creds = flow.run_local_server(port=0)
-    return {
-        "access_token": creds.token,
-        "refresh_token": creds.refresh_token,
-        "expires_at": creds.expiry
-    }
+    return TokenMetadata(
+        access_token=creds.token,
+        refresh_token=creds.refresh_token,
+        expires_at=creds.expiry
+    )

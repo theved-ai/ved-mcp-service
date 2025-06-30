@@ -4,9 +4,10 @@ from mcp.server.fastmcp.server import Context
 from app.mcp_server import server
 from app.webclients.slack.slack_client import SlackClientImpl
 from app.utils.tool_util import fetch_user_uuid
-from app.service.external_token_service import fetch_user_access_token
+from app.service.external_token_service import ExternalTokenService
 
 slack_client = SlackClientImpl()
+token_service = ExternalTokenService()
 client_name = "slack"
 
 @server.tool(
@@ -18,7 +19,7 @@ client_name = "slack"
     )
 )
 async def list_conversations(ctx: Context) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
 
     for bot_token in bot_tokens:
@@ -62,7 +63,7 @@ async def list_conversations(ctx: Context) -> types.CallToolResult:
     )
 )
 async def get_channel_info(ctx: Context, channel_id: str) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
     for bot_token in bot_tokens:
         response = await slack_client.get_conversation_info(bot_token, channel_id)
@@ -83,7 +84,7 @@ async def get_channel_info(ctx: Context, channel_id: str) -> types.CallToolResul
     )
 )
 async def read_channel_messages(ctx: Context, channel_id: str, limit: int = 5) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
     for bot_token in bot_tokens:
         response = await slack_client.get_conversation_history(bot_token, channel_id, limit)
@@ -104,7 +105,7 @@ async def read_channel_messages(ctx: Context, channel_id: str, limit: int = 5) -
     )
 )
 async def read_thread_replies(ctx: Context, channel_id: str, thread_ts: str) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
     for bot_token in bot_tokens:
         response = await slack_client.get_conversation_replies(bot_token, channel_id, thread_ts)
@@ -124,7 +125,7 @@ async def read_thread_replies(ctx: Context, channel_id: str, thread_ts: str) -> 
     )
 )
 async def get_user_info(ctx: Context, user_id: str) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
     for bot_token in bot_tokens:
         response = await slack_client.get_user_info(bot_token, user_id)
@@ -142,7 +143,7 @@ async def get_user_info(ctx: Context, user_id: str) -> types.CallToolResult:
     )
 )
 async def list_users(ctx: Context) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
     for bot_token in bot_tokens:
         response = await slack_client.list_users(bot_token)
@@ -168,7 +169,7 @@ async def list_users(ctx: Context) -> types.CallToolResult:
     )
 )
 async def search_messages(ctx: Context, channel_id: str, keyword: str, limit: int = 10) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
     for bot_token in bot_tokens:
         response = await slack_client.search_messages_in_conversation({
@@ -200,7 +201,7 @@ async def search_messages(ctx: Context, channel_id: str, keyword: str, limit: in
     )
 )
 async def search_mentions(ctx: Context, user_id: str, channel_id: str, limit: int = 10) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
     for bot_token in bot_tokens:
         response = await slack_client.get_messages_mentioning_user({
@@ -225,7 +226,7 @@ async def search_mentions(ctx: Context, user_id: str, channel_id: str, limit: in
     )
 )
 async def is_bot_in_channel(ctx: Context, channel_id: str) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
     for bot_token in bot_tokens:
         is_member = await slack_client.is_bot_member_of_conversation({
@@ -246,7 +247,7 @@ async def is_bot_in_channel(ctx: Context, channel_id: str) -> types.CallToolResu
     )
 )
 async def get_channel_members(ctx: Context, channel_id: str) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
     for bot_token in bot_tokens:
         response = await slack_client.get_conversation_members({
@@ -270,7 +271,7 @@ async def get_channel_members(ctx: Context, channel_id: str) -> types.CallToolRe
     )
 )
 async def get_dm_channel_with_user(ctx: Context, user_id: str) -> types.CallToolResult:
-    bot_tokens = await fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
+    bot_tokens = await token_service.fetch_user_access_token(await fetch_user_uuid(ctx), client_name)
     output = {}
     for bot_token in bot_tokens:
         try:

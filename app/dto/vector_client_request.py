@@ -3,7 +3,7 @@ from typing import Any
 from pydantic import BaseModel
 
 from app.dto.pensieve_request import PensieveRequest
-from app.utils.constants import EMBEDDING_MODEL_NAME
+from app.utils.application_constants import EMBEDDING_MODEL_NAME
 
 
 def from_pensieve_req(req: PensieveRequest, vector: list[float]):

@@ -1,6 +1,6 @@
 from typing import List
 
-from app.db.db_processor import fetch_chunks
+from app.db.postgres.postgres_processor import PostgresProcessor
 from app.dto.pensieve_response import PensieveResponse
 from app.dto.vector_client_response import VectorClientResponse
 from app.enums.input_data_source import InputDataSource
@@ -10,12 +10,15 @@ from app.config.logging_config import logger
 
 class TypedDataSourceService(TextExtractionBase):
 
+    def __init__(self):
+        self.storage_service = PostgresProcessor()
+
     def supported_data_input_source(self) -> InputDataSource:
         return InputDataSource.USER_TYPED
 
     async def extract_text_from_vector(self, vector_records: List[VectorClientResponse]):
         chunk_ids = [matching_vector.chunk_id for matching_vector in vector_records]
-        chunk_db_records = await fetch_chunks(chunk_ids)
+        chunk_db_records = await self.storage_service.fetch_chunks(chunk_ids)
         chunk_dict = {record.chunk_id: record.chunk_content for record in chunk_db_records}
 
         responses = []

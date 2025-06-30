@@ -4,17 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="31ce6777-a100-4b7e-a09c-f296f05978eb" name="Changes" comment="untested chat retrieval support from pensieve">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="31ce6777-a100-4b7e-a09c-f296f05978eb" name="Changes" comment="added chat searching tool in pensieve">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db/db_processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db/postgres/postgres_processor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/dto/vector_client_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dto/vector_client_request.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dto/vector_client_response.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dto/vector_client_response.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/mcp_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/mcp_server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/service/external_token_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/service/external_token_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tools/gcalendar_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tools/gcalendar_tool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tools/gmail_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tools/gmail_tool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tools/gtasks_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tools/gtasks_tool.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/tools/pensieve_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tools/pensieve_tool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tools/slack_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tools/slack_tool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/application_constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/google_oauth_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/google_oauth_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/tool_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/tool_util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/gsuite/gcalendar/gcal_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/gsuite/gcalendar/gcal_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/gsuite/gmail/gmail_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/gsuite/gmail/gmail_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/gsuite/google_scopes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/gsuite/google_scopes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/gsuite/gtasks/gtasks_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/gsuite/gtasks/gtasks_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/pensieve/embedder.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/pensieve/embedder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/webclients/pensieve/pensieve_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/pensieve/pensieve_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/webclients/pensieve/qdrant_vector_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/pensieve/qdrant_vector_client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/webclients/pensieve/text_extraction/chat_data_source_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/pensieve/text_extraction/chat_data_source_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/webclients/pensieve/text_extraction/text_extraction_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/pensieve/text_extraction/text_extraction_base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/webclients/pensieve/vector_text_extraction_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/pensieve/text_extraction/vector_text_extraction_factory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webclients/pensieve/text_extraction/typed_data_source_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webclients/pensieve/text_extraction/typed_data_source_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,8 +71,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/a36469/srccode/ved-mcp-service/app/enums",
-    "project.structure.last.edited": "Modules",
+    "last_opened_file_path": "/Users/a36469/srccode/ved-mcp-service/app/utils",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.171875",
     "project.structure.side.proportion": "0.26726058",
     "settings.editor.selected.configurable": "Errors"
@@ -65,16 +80,18 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/utils" />
+      <recent name="$PROJECT_DIR$/app/decorators" />
+      <recent name="$PROJECT_DIR$/app/db/postgres" />
       <recent name="$PROJECT_DIR$/app/enums" />
       <recent name="$PROJECT_DIR$/app/config" />
-      <recent name="$PROJECT_DIR$/app/webclients/gmail" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/db/postgres" />
       <recent name="$PROJECT_DIR$/app/webclients/pensieve/text_extraction" />
       <recent name="$PROJECT_DIR$/app/webclients/gsuite/gmail" />
       <recent name="$PROJECT_DIR$/app/service" />
       <recent name="$PROJECT_DIR$/app/webclients/gsuite" />
-      <recent name="$PROJECT_DIR$/app" />
     </key>
   </component>
   <component name="RunManager" selected="Python.mcp-server">
@@ -326,7 +343,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751157178278</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="added chat searching tool in pensieve">
+      <option name="closed" value="true" />
+      <created>1751274246686</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1751274246686</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -354,7 +379,8 @@
     <MESSAGE value="resolved expired refresh token issue for google auth" />
     <MESSAGE value="updated init sql script" />
     <MESSAGE value="untested chat retrieval support from pensieve" />
-    <option name="LAST_COMMIT_MESSAGE" value="untested chat retrieval support from pensieve" />
+    <MESSAGE value="added chat searching tool in pensieve" />
+    <option name="LAST_COMMIT_MESSAGE" value="added chat searching tool in pensieve" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -421,19 +447,9 @@
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
-          <line>42</line>
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_auth.py</url>
           <line>22</line>
           <option name="timeStamp" value="48" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
-          <line>48</line>
-          <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/webclients/gsuite/gmail/gmail_client.py</url>
@@ -441,88 +457,68 @@
           <option name="timeStamp" value="50" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
-          <line>50</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/webclients/gsuite/gtasks/gtasks_client.py</url>
           <line>17</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
-          <line>27</line>
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
-          <line>57</line>
-          <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
-          <line>29</line>
-          <option name="timeStamp" value="55" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>144</line>
+          <line>145</line>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>126</line>
+          <line>127</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>106</line>
+          <line>107</line>
           <option name="timeStamp" value="58" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>85</line>
+          <line>86</line>
           <option name="timeStamp" value="59" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>64</line>
+          <line>65</line>
           <option name="timeStamp" value="60" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>170</line>
+          <line>171</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>202</line>
+          <line>203</line>
           <option name="timeStamp" value="63" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>227</line>
+          <line>228</line>
           <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>248</line>
+          <line>249</line>
           <option name="timeStamp" value="65" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>24</line>
+          <line>25</line>
           <option name="timeStamp" value="71" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/tools/slack_tool.py</url>
-          <line>46</line>
+          <line>47</line>
           <option name="timeStamp" value="72" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/webclients/pensieve/text_extraction/chat_data_source_service.py</url>
-          <line>17</line>
+          <line>19</line>
           <option name="timeStamp" value="75" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -539,6 +535,51 @@
           <url>file://$PROJECT_DIR$/app/webclients/pensieve/qdrant_vector_client.py</url>
           <line>62</line>
           <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/gmail_tool.py</url>
+          <line>41</line>
+          <option name="timeStamp" value="80" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
+          <line>20</line>
+          <option name="timeStamp" value="82" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/db/postgres/postgres_processor.py</url>
+          <line>26</line>
+          <option name="timeStamp" value="85" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/service/external_token_service.py</url>
+          <line>29</line>
+          <option name="timeStamp" value="86" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/webclients/gsuite/google_service_builder.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/tools/gmail_tool.py</url>
+          <line>60</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/webclients/gsuite/gmail/gmail_client.py</url>
+          <line>22</line>
+          <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/webclients/gsuite/gmail/gmail_client.py</url>
+          <line>37</line>
+          <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/webclients/pensieve/pensieve_service.py</url>
+          <line>30</line>
+          <option name="timeStamp" value="91" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

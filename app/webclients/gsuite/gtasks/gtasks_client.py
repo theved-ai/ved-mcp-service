@@ -4,7 +4,7 @@ from typing import Any, Optional
 from app.decorators.retry_decorator import async_retryable
 from app.webclients.gsuite.gtasks.base import GoogleTasksClientBase
 from app.webclients.gsuite.google_service_builder import generate_authenticated_client
-from app.utils.constants import google_tasks_service_version, google_tasks_service_name
+from app.utils.application_constants import google_tasks_service_version, google_tasks_service_name
 
 logger = logging.getLogger(__name__)
 

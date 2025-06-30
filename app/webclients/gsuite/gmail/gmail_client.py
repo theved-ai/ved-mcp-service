@@ -11,7 +11,7 @@ from app.webclients.gsuite.gmail.gmail_util import (
 )
 from app.webclients.gsuite.google_service_builder import generate_authenticated_client
 from app.webclients.gsuite.gmail.base import GmailClientBase
-from app.utils.constants import gmail_service_name, gmail_service_version
+from app.utils.application_constants import gmail_service_name, gmail_service_version
 
 
 logger = logging.getLogger(__name__)

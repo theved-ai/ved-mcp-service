@@ -1,13 +1,17 @@
-from app.utils.tool_util import fetch_user_uuid
-from app.mcp_server import server
-import logging
 from mcp import types
 from mcp.server.fastmcp.server import Context
+
+from app.decorators.try_catch_decorator import try_catch_wrapper_no_raised_exception
+from app.mcp_server import server
+from app.utils.app_utils import failed_tool_response
+from app.utils.application_constants import gtask_listing_tool_failed, gtask_fetch_failed, gtask_listing_failed, \
+    gtask_fetch_task_failed, gtask_create_task_failed, gtask_modify_task_failed, gtask_delete_task_failed
+from app.utils.tool_util import fetch_user_uuid
 from app.webclients.gsuite.gtasks.gtasks_client import GoogleTasksClientImpl
 
 tasks_client = GoogleTasksClientImpl()
-logger = logging.getLogger(__name__)
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gtask_listing_tool_failed))
 @server.tool(
     name="list_google_tasklists",
     description=(
@@ -18,21 +22,17 @@ logger = logging.getLogger(__name__)
 )
 async def list_google_tasklists(ctx: Context) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        tasklists = await tasks_client.list_tasklists(user_uuid)
-        if not tasklists:
-            return types.CallToolResult(content=[types.TextContent(type="text", text="No tasklists found.")])
-        lines = []
-        for tl in tasklists:
-            title = tl.get('title', 'No Title')
-            tl_id = tl.get('id', 'Unknown')
-            lines.append(f"- {title} (ID: {tl_id})")
-        return types.CallToolResult(content=[types.TextContent(type="text", text="\n".join(lines))])
-    except Exception as e:
-        logger.exception("Error listing Google Tasklists")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    tasklists = await tasks_client.list_tasklists(user_uuid)
+    if not tasklists: return types.CallToolResult(content=[types.TextContent(type="text", text="No tasklists found.")])
+    lines = []
+    for tl in tasklists:
+        title = tl.get('title', 'No Title')
+        tl_id = tl.get('id', 'Unknown')
+        lines.append(f"- {title} (ID: {tl_id})")
+    return types.CallToolResult(content=[types.TextContent(type="text", text="\n".join(lines))])
 
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gtask_fetch_failed))
 @server.tool(
     name="get_google_tasklist",
     description=(
@@ -43,21 +43,18 @@ async def list_google_tasklists(ctx: Context) -> types.CallToolResult:
 )
 async def get_google_tasklist(ctx: Context, tasklist_id: str) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        tasklist = await tasks_client.get_tasklist(user_uuid, tasklist_id)
-        if not tasklist:
-            return types.CallToolResult(content=[types.TextContent(type="text", text="Tasklist not found.")])
-        title = tasklist.get('title', 'No Title')
-        tl_id = tasklist.get('id', 'Unknown')
-        updated = tasklist.get('updated', 'Unknown')
-        return types.CallToolResult(
-            content=[types.TextContent(type="text", text=f"Tasklist: {title}\nID: {tl_id}\nUpdated: {updated}")]
-        )
-    except Exception as e:
-        logger.exception("Error getting Google Tasklist")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    tasklist = await tasks_client.get_tasklist(user_uuid, tasklist_id)
+    if not tasklist:
+        return types.CallToolResult(content=[types.TextContent(type="text", text="Tasklist not found.")])
+    title = tasklist.get('title', 'No Title')
+    tl_id = tasklist.get('id', 'Unknown')
+    updated = tasklist.get('updated', 'Unknown')
+    return types.CallToolResult(
+        content=[types.TextContent(type="text", text=f"Tasklist: {title}\nID: {tl_id}\nUpdated: {updated}")]
+    )
 
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gtask_listing_failed))
 @server.tool(
     name="list_google_tasks",
     description=(
@@ -87,27 +84,23 @@ async def list_google_tasks(
         page_token: str = None,
 ) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        tasks = await tasks_client.list_tasks(
-            user_uuid, tasklist_id, show_completed, show_hidden, show_deleted,
-            max_results, due_min, due_max, page_token
-        )
-        if not tasks:
-            return types.CallToolResult(content=[types.TextContent(type="text", text="No tasks found in this tasklist.")])
-        lines = []
-        for task in tasks:
-            title = task.get('title', 'No Title')
-            due = task.get('due', 'No Due Date')
-            status = task.get('status', 'No Status')
-            task_id = task.get('id', 'Unknown')
-            lines.append(f"- {title} (ID: {task_id}, Due: {due}, Status: {status})")
-        return types.CallToolResult(content=[types.TextContent(type="text", text="\n".join(lines))])
-    except Exception as e:
-        logger.exception("Error listing Google Tasks")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    tasks = await tasks_client.list_tasks(
+        user_uuid, tasklist_id, show_completed, show_hidden, show_deleted,
+        max_results, due_min, due_max, page_token
+    )
+    if not tasks:
+        return types.CallToolResult(content=[types.TextContent(type="text", text="No tasks found in this tasklist.")])
+    lines = []
+    for task in tasks:
+        title = task.get('title', 'No Title')
+        due = task.get('due', 'No Due Date')
+        status = task.get('status', 'No Status')
+        task_id = task.get('id', 'Unknown')
+        lines.append(f"- {title} (ID: {task_id}, Due: {due}, Status: {status})")
+    return types.CallToolResult(content=[types.TextContent(type="text", text="\n".join(lines))])
 
 
-
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gtask_fetch_task_failed))
 @server.tool(
     name="get_google_task",
     description=(
@@ -121,22 +114,19 @@ async def list_google_tasks(
 )
 async def get_google_task(ctx: Context, tasklist_id: str, task_id: str) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        task = await tasks_client.get_task(user_uuid, tasklist_id, task_id)
-        if not task:
-            return types.CallToolResult(content=[types.TextContent(type="text", text="Task not found.")])
-        title = task.get('title', 'No Title')
-        notes = task.get('notes', 'No Notes')
-        due = task.get('due', 'No Due Date')
-        status = task.get('status', 'No Status')
-        return types.CallToolResult(
-            content=[types.TextContent(type="text", text=f"Task: {title}\nStatus: {status}\nDue: {due}\nNotes: {notes}")]
-        )
-    except Exception as e:
-        logger.exception("Error getting Google Task")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    task = await tasks_client.get_task(user_uuid, tasklist_id, task_id)
+    if not task:
+        return types.CallToolResult(content=[types.TextContent(type="text", text="Task not found.")])
+    title = task.get('title', 'No Title')
+    notes = task.get('notes', 'No Notes')
+    due = task.get('due', 'No Due Date')
+    status = task.get('status', 'No Status')
+    return types.CallToolResult(
+        content=[types.TextContent(type="text", text=f"Task: {title}\nStatus: {status}\nDue: {due}\nNotes: {notes}")]
+    )
 
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gtask_create_task_failed))
 @server.tool(
     name="create_google_task",
     description=(
@@ -162,18 +152,13 @@ async def create_google_task(
         previous: str = None,
 ) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        task = await tasks_client.create_task(
-            user_uuid, tasklist_id, title, notes, due, status, parent, previous
-        )
-        return types.CallToolResult(
-            content=[types.TextContent(type="text", text=f"Task '{title}' created with ID: {task.get('id', 'Unknown')}")]
-        )
-    except Exception as e:
-        logger.exception("Error creating Google Task")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    task = await tasks_client.create_task(user_uuid, tasklist_id, title, notes, due, status, parent, previous)
+    return types.CallToolResult(
+        content=[types.TextContent(type="text", text=f"Task '{title}' created with ID: {task.get('id', 'Unknown')}")]
+    )
 
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gtask_modify_task_failed))
 @server.tool(
     name="modify_google_task",
     description=(
@@ -209,21 +194,17 @@ async def modify_google_task(
         position: str = None,
 ) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        task = await tasks_client.modify_task(
-            user_uuid, tasklist_id, task_id,
-            title, notes, due, status, parent, previous,
-            completed, deleted, hidden, position
-        )
-        return types.CallToolResult(
-            content=[types.TextContent(type="text", text=f"Task '{task.get('title', 'Unknown')}' updated successfully.")]
-        )
-    except Exception as e:
-        logger.exception("Error modifying Google Task")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    task = await tasks_client.modify_task(
+        user_uuid, tasklist_id, task_id,
+        title, notes, due, status, parent, previous,
+        completed, deleted, hidden, position
+    )
+    return types.CallToolResult(
+        content=[types.TextContent(type="text", text=f"Task '{task.get('title', 'Unknown')}' updated successfully.")]
+    )
 
 
-
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gtask_delete_task_failed))
 @server.tool(
     name="delete_google_task",
     description=(
@@ -235,11 +216,7 @@ async def modify_google_task(
 )
 async def delete_google_task(ctx: Context, tasklist_id: str, task_id: str) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        await tasks_client.delete_task(user_uuid, tasklist_id, task_id)
-        return types.CallToolResult(
-            content=[types.TextContent(type="text", text=f"Task {task_id} deleted successfully.")]
-        )
-    except Exception as e:
-        logger.exception("Error deleting Google Task")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    await tasks_client.delete_task(user_uuid, tasklist_id, task_id)
+    return types.CallToolResult(
+        content=[types.TextContent(type="text", text=f"Task {task_id} deleted successfully.")]
+    )

@@ -1,8 +1,7 @@
-import json
 from typing import List
 
 from app.config.logging_config import logger
-from app.db.db_processor import fetch_message_data
+from app.db.postgres.postgres_processor import PostgresProcessor
 from app.dto.pensieve_response import PensieveResponse
 from app.dto.vector_client_response import VectorClientResponse
 from app.enums.input_data_source import InputDataSource
@@ -11,12 +10,15 @@ from app.webclients.pensieve.text_extraction.text_extraction_base import TextExt
 
 class ChatDataSourceService(TextExtractionBase):
 
+    def __init__(self):
+        self.storage_service = PostgresProcessor()
+
     def supported_data_input_source(self) -> InputDataSource:
         return InputDataSource.CHAT
 
     async def extract_text_from_vector(self, vector_records: List[VectorClientResponse]):
         message_ids = [vector_record.metadata.get('message_id') for vector_record in vector_records]
-        message_records = await fetch_message_data(message_ids)
+        message_records = await self.storage_service.fetch_message_data(message_ids)
         message_dict = {str(record.message_id): record.content for record in message_records}
 
         responses = []

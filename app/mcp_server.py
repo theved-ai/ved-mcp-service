@@ -7,7 +7,7 @@ settings = {
 
 server = FastMCP(
     name="mcp_server",
-    server_url="http://localhost:8080/mcp",
+    server_url="http://0.0.0.0:8080/mcp",
     port="8080",
     **settings
 )

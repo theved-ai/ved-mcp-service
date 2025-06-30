@@ -1,16 +1,22 @@
 import json
-import logging
 from typing import List, Optional, Literal
+
 from mcp import types
 from mcp.server.fastmcp.server import Context
+
+from app.decorators.try_catch_decorator import try_catch_wrapper_no_raised_exception
 from app.mcp_server import server
-from app.webclients.gsuite.gmail.gmail_client import GmailClientImpl
+from app.utils.app_utils import failed_tool_response
+from app.utils.application_constants import gmail_search_tool_failed, gmail_fetch_tool_failed, \
+    gmail_fetch_batch_tool_failed, gmail_mail_send_tool_failed, gmail_draft_creation_tool_failed, \
+    gmail_thread_count_tool_failed, gmail_listing_labels_tool_failed, gmail_labels_tool_failed, \
+    gmail_labels_update_tool_failed
 from app.utils.tool_util import fetch_user_uuid
+from app.webclients.gsuite.gmail.gmail_client import GmailClientImpl
 
 gmail_client = GmailClientImpl()
-logger = logging.getLogger(__name__)
 
-
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gmail_search_tool_failed))
 @server.tool(
     name="search_gmail_messages",
     description=(
@@ -34,15 +40,13 @@ logger = logging.getLogger(__name__)
 )
 async def search_gmail_messages(ctx: Context, query: str, page_size: int = 10) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        messages = await gmail_client.search_messages(user_uuid, query, page_size)
-        msg_ids = [msg["id"] for msg in messages] if messages else []
-        text = f"Found {len(msg_ids)} message(s):\n" + "\n".join(msg_ids) if msg_ids else "No messages found."
-        return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
-    except Exception as e:
-        logger.exception("Error searching Gmail messages")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    messages = await gmail_client.search_messages(user_uuid, query, page_size)
+    msg_ids = [msg["id"] for msg in messages] if messages else []
+    text = f"Found {len(msg_ids)} message(s):\n" + "\n".join(msg_ids) if msg_ids else "No messages found."
+    return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
 
+
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gmail_fetch_tool_failed))
 @server.tool(
     name="get_gmail_message_content",
     description=(
@@ -55,14 +59,12 @@ async def search_gmail_messages(ctx: Context, query: str, page_size: int = 10) -
 )
 async def get_gmail_message_content(ctx: Context, message_id: str) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        msg = await gmail_client.get_message_content(user_uuid, message_id)
-        text = json.dumps(msg, indent=2)
-        return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
-    except Exception as e:
-        logger.exception("Error getting Gmail message content")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    msg = await gmail_client.get_message_content(user_uuid, message_id)
+    text = json.dumps(msg, indent=2)
+    return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
 
+
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gmail_fetch_batch_tool_failed))
 @server.tool(
     name="get_gmail_messages_content_batch",
     description=(
@@ -76,14 +78,12 @@ async def get_gmail_message_content(ctx: Context, message_id: str) -> types.Call
 )
 async def get_gmail_messages_content_batch(ctx: Context, message_ids: List[str], format: Literal["full", "metadata"] = "full") -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        msgs = await gmail_client.get_messages_content_batch(user_uuid, message_ids, format)
-        text = json.dumps(msgs, indent=2)
-        return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
-    except Exception as e:
-        logger.exception("Error getting Gmail messages content batch")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    msgs = await gmail_client.get_messages_content_batch(user_uuid, message_ids, format)
+    text = json.dumps(msgs, indent=2)
+    return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
 
+
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gmail_mail_send_tool_failed))
 @server.tool(
     name="send_gmail_message",
     description=(
@@ -98,13 +98,11 @@ async def get_gmail_messages_content_batch(ctx: Context, message_ids: List[str],
 )
 async def send_gmail_message(ctx: Context, to: str, subject: str, body: str) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        message_id = await gmail_client.send_message(user_uuid, to, subject, body)
-        return types.CallToolResult(content=[types.TextContent(type="text", text=f"Email sent! Message ID: {message_id}")])
-    except Exception as e:
-        logger.exception("Error sending Gmail message")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    message_id = await gmail_client.send_message(user_uuid, to, subject, body)
+    return types.CallToolResult(content=[types.TextContent(type="text", text=f"Email sent! Message ID: {message_id}")])
 
+
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gmail_draft_creation_tool_failed))
 @server.tool(
     name="draft_gmail_message",
     description=(
@@ -119,13 +117,11 @@ async def send_gmail_message(ctx: Context, to: str, subject: str, body: str) -> 
 )
 async def draft_gmail_message(ctx: Context, subject: str, body: str, to: Optional[str] = None) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        draft_id = await gmail_client.draft_message(user_uuid, subject, body, to)
-        return types.CallToolResult(content=[types.TextContent(type="text", text=f"Draft created! Draft ID: {draft_id}")])
-    except Exception as e:
-        logger.exception("Error creating Gmail draft")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    draft_id = await gmail_client.draft_message(user_uuid, subject, body, to)
+    return types.CallToolResult(content=[types.TextContent(type="text", text=f"Draft created! Draft ID: {draft_id}")])
 
+
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gmail_thread_count_tool_failed))
 @server.tool(
     name="get_gmail_thread_content",
     description=(
@@ -138,14 +134,12 @@ async def draft_gmail_message(ctx: Context, subject: str, body: str, to: Optiona
 )
 async def get_gmail_thread_content(ctx: Context, thread_id: str) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        thread_content = await gmail_client.get_thread_content(user_uuid, thread_id)
-        text = json.dumps(thread_content, indent=2)
-        return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
-    except Exception as e:
-        logger.exception("Error getting Gmail thread content")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    thread_content = await gmail_client.get_thread_content(user_uuid, thread_id)
+    text = json.dumps(thread_content, indent=2)
+    return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
 
+
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gmail_listing_labels_tool_failed))
 @server.tool(
     name="list_gmail_labels",
     description=(
@@ -156,14 +150,12 @@ async def get_gmail_thread_content(ctx: Context, thread_id: str) -> types.CallTo
 )
 async def list_gmail_labels(ctx: Context) -> types.CallToolResult:
     user_uuid, resolved_email = await fetch_user_uuid(ctx)
-    try:
-        labels = await gmail_client.list_labels(user_uuid)
-        text = json.dumps(labels, indent=2)
-        return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
-    except Exception as e:
-        logger.exception("Error listing Gmail labels")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    labels = await gmail_client.list_labels(user_uuid)
+    text = json.dumps(labels, indent=2)
+    return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
 
+
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gmail_labels_tool_failed))
 @server.tool(
     name="manage_gmail_label",
     description=(
@@ -187,16 +179,12 @@ async def manage_gmail_label(
         message_list_visibility: Literal["show", "hide"] = "show"
 ) -> types.CallToolResult:
     user_uuid, resolved_email = await fetch_user_uuid(ctx)
-    try:
-        result = await gmail_client.manage_label(
-            user_uuid, action, name, label_id, label_list_visibility, message_list_visibility
-        )
-        text = json.dumps(result, indent=2)
-        return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
-    except Exception as e:
-        logger.exception("Error managing Gmail label")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    result = await gmail_client.manage_label(user_uuid, action, name, label_id, label_list_visibility, message_list_visibility)
+    text = json.dumps(result, indent=2)
+    return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
 
+
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, gmail_labels_update_tool_failed))
 @server.tool(
     name="modify_gmail_message_labels",
     description=(
@@ -216,12 +204,6 @@ async def modify_gmail_message_labels(
         remove_label_ids: Optional[List[str]] = None
 ) -> types.CallToolResult:
     user_uuid, resolved_email = await fetch_user_uuid(ctx)
-    try:
-        result = await gmail_client.modify_message_labels(
-            user_uuid, message_id, add_label_ids, remove_label_ids
-        )
-        text = json.dumps(result, indent=2)
-        return types.CallToolResult(content=[types.TextContent(type="text", text=text)])
-    except Exception as e:
-        logger.exception("Error modifying Gmail message labels")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    result = await gmail_client.modify_message_labels(user_uuid, message_id, add_label_ids, remove_label_ids)
+    text = json.dumps(result, indent=2)
+    return types.CallToolResult(content=[types.TextContent(type="text", text=text)])

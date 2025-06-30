@@ -1,13 +1,16 @@
-import logging
 from mcp import types
 from mcp.server.fastmcp.server import Context
-from app.webclients.gsuite.gcalendar.gcal_client import GoogleCalendarClientImpl
-from app.utils.tool_util import fetch_user_uuid
+from app.utils.app_utils import failed_tool_response
+from app.decorators.try_catch_decorator import try_catch_wrapper_no_raised_exception
 from app.mcp_server import server
+from app.utils.application_constants import listing_gcal_tool_failed, fetching_gcal_events_tool_failed, \
+    creating_gcal_event_tool_failed, update_gcal_event_tool_failed, delete_gcal_event_tool_failed
+from app.utils.tool_util import fetch_user_uuid
+from app.webclients.gsuite.gcalendar.gcal_client import GoogleCalendarClientImpl
 
-logger = logging.getLogger(__name__)
 calendar_client = GoogleCalendarClientImpl()
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, listing_gcal_tool_failed))
 @server.tool(
     name="list_google_calendars",
     description=(
@@ -18,22 +21,19 @@ calendar_client = GoogleCalendarClientImpl()
 )
 async def list_google_calendars(ctx: Context) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        calendars = await calendar_client.list_calendars(user_uuid)
-        if not calendars:
-            return types.CallToolResult(content=[types.TextContent(type="text", text="No calendars found.")])
-        lines = []
-        for cal in calendars:
-            summary = cal.get('summary', 'No Summary')
-            cal_id = cal.get('id', 'Unknown')
-            is_primary = " (Primary)" if cal.get('primary') else ""
-            lines.append(f"- {summary}{is_primary} (ID: {cal_id})")
-        return types.CallToolResult(content=[types.TextContent(type="text", text="\n".join(lines))])
-    except Exception as e:
-        logger.exception("Error listing Google Calendars")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    calendars = await calendar_client.list_calendars(user_uuid)
+    if not calendars:
+        return types.CallToolResult(content=[types.TextContent(type="text", text="No calendars found.")])
+    lines = []
+    for cal in calendars:
+        summary = cal.get('summary', 'No Summary')
+        cal_id = cal.get('id', 'Unknown')
+        is_primary = " (Primary)" if cal.get('primary') else ""
+        lines.append(f"- {summary}{is_primary} (ID: {cal_id})")
+    return types.CallToolResult(content=[types.TextContent(type="text", text="\n".join(lines))])
 
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, fetching_gcal_events_tool_failed))
 @server.tool(
     name="get_google_calendar_events",
     description=(
@@ -55,22 +55,19 @@ async def get_google_calendar_events(
         max_results: int = 25
 ) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        events = await calendar_client.get_events(user_uuid, calendar_id, time_min, time_max, max_results)
-        if not events:
-            return types.CallToolResult(content=[types.TextContent(type="text", text="No events found.")])
-        lines = []
-        for e in events:
-            summary = e.get('summary', 'No Title')
-            start = e['start'].get('dateTime', e['start'].get('date', ''))
-            link = e.get('htmlLink', '')
-            lines.append(f'- "{summary}" (Starts: {start}) | Link: {link}')
-        return types.CallToolResult(content=[types.TextContent(type="text", text="\n".join(lines))])
-    except Exception as e:
-        logger.exception("Error getting Google Calendar events")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    events = await calendar_client.get_events(user_uuid, calendar_id, time_min, time_max, max_results)
+    if not events:
+        return types.CallToolResult(content=[types.TextContent(type="text", text="No events found.")])
+    lines = []
+    for e in events:
+        summary = e.get('summary', 'No Title')
+        start = e['start'].get('dateTime', e['start'].get('date', ''))
+        link = e.get('htmlLink', '')
+        lines.append(f'- "{summary}" (Starts: {start}) | Link: {link}')
+    return types.CallToolResult(content=[types.TextContent(type="text", text="\n".join(lines))])
 
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, creating_gcal_event_tool_failed))
 @server.tool(
     name="create_google_calendar_event",
     description=(
@@ -100,18 +97,15 @@ async def create_google_calendar_event(
         timezone: str = None,
 ) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        event = await calendar_client.create_event(
-            user_uuid, summary, start_time, end_time, calendar_id, description, location, attendees, timezone
-        )
-        link = event.get("htmlLink", "No link available")
-        confirmation = f"Event '{event.get('summary', summary)}' created. Link: {link}"
-        return types.CallToolResult(content=[types.TextContent(type="text", text=confirmation)])
-    except Exception as e:
-        logger.exception("Error creating Google Calendar event")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    event = await calendar_client.create_event(
+        user_uuid, summary, start_time, end_time, calendar_id, description, location, attendees, timezone
+    )
+    link = event.get("htmlLink", "No link available")
+    confirmation = f"Event '{event.get('summary', summary)}' created. Link: {link}"
+    return types.CallToolResult(content=[types.TextContent(type="text", text=confirmation)])
 
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, update_gcal_event_tool_failed))
 @server.tool(
     name="modify_google_calendar_event",
     description=(
@@ -137,18 +131,15 @@ async def modify_google_calendar_event(
         timezone: str = None,
 ) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        event = await calendar_client.modify_event(
-            user_uuid, event_id, calendar_id, summary, start_time, end_time, description, location, attendees, timezone
-        )
-        link = event.get("htmlLink", "No link available")
-        confirmation = f"Event updated. Link: {link}"
-        return types.CallToolResult(content=[types.TextContent(type="text", text=confirmation)])
-    except Exception as e:
-        logger.exception("Error modifying Google Calendar event")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    event = await calendar_client.modify_event(
+        user_uuid, event_id, calendar_id, summary, start_time, end_time, description, location, attendees, timezone
+    )
+    link = event.get("htmlLink", "No link available")
+    confirmation = f"Event updated. Link: {link}"
+    return types.CallToolResult(content=[types.TextContent(type="text", text=confirmation)])
 
 
+@try_catch_wrapper_no_raised_exception(logger_fn= lambda e: failed_tool_response(e, delete_gcal_event_tool_failed))
 @server.tool(
     name="delete_google_calendar_event",
     description=(
@@ -166,10 +157,6 @@ async def delete_google_calendar_event(
         calendar_id: str = "primary",
 ) -> types.CallToolResult:
     user_uuid = await fetch_user_uuid(ctx)
-    try:
-        result = await calendar_client.delete_event(user_uuid, event_id, calendar_id)
-        confirmation = f"Event (ID: {event_id}) deleted." if result.get("deleted") else "Delete failed."
-        return types.CallToolResult(content=[types.TextContent(type="text", text=confirmation)])
-    except Exception as e:
-        logger.exception("Error deleting Google Calendar event")
-        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+    result = await calendar_client.delete_event(user_uuid, event_id, calendar_id)
+    confirmation = f"Event (ID: {event_id}) deleted." if result.get("deleted") else "Delete failed."
+    return types.CallToolResult(content=[types.TextContent(type="text", text=confirmation)])

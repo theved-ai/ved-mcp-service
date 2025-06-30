@@ -1,6 +1,6 @@
 from typing import List
 from sentence_transformers import SentenceTransformer
-from app.utils.constants import EMBEDDING_MODEL_NAME
+from app.utils.application_constants import EMBEDDING_MODEL_NAME
 
 
 class Embedder:

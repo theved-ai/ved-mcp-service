@@ -5,7 +5,7 @@ from app.dto.pensieve_response import PensieveResponse
 from app.dto.search_chat_req import SearchChatRequest
 from app.dto.vector_client_request import from_pensieve_req
 from app.enums.input_data_source import InputDataSource
-from app.utils.constants import EMBEDDING_MODEL_NAME
+from app.utils.application_constants import EMBEDDING_MODEL_NAME
 from app.webclients.pensieve.embedder import Embedder
 from app.webclients.pensieve.qdrant_vector_client import QdrantVectorClient
 from app.webclients.pensieve.text_extraction.vector_text_extraction_factory import get_text_extraction_service
