@@ -1,5 +1,7 @@
-from typing import Optional, Any
+from typing import Any
+
 from pydantic import BaseModel
+
 from app.dto.pensieve_request import PensieveRequest
 from app.utils.constants import EMBEDDING_MODEL_NAME
 
@@ -15,4 +17,4 @@ class VectorClientRequest(BaseModel):
     collection_name: str
     query_vector: list[float]
     max_matching_records: int = 100
-    query_metadata: Optional[dict[str, Any]]
+    query_metadata: dict[str, Any] = {}

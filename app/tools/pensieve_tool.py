@@ -1,5 +1,6 @@
 from typing import Any, Optional
 
+from app.dto.search_chat_req import SearchChatRequest
 from app.dto.pensieve_request import PensieveRequest
 from app.utils.tool_util import fetch_user_uuid
 from app.mcp_server import server
@@ -13,27 +14,32 @@ logger = logging.getLogger(__name__)
 pensieve_service = PensieveService()
 
 @server.tool(
-    name="search_pensieve_chunks",
-    description=(
-            "Use this tool to search the user's ingested data (emails, meetings, Slack, YouTube transcripts, web pages, PDFs, etc.) for relevant information, facts, or content.\n\n"
-            "**How to use:**\n"
-            "- Always pass the user's query in `user_prompt`.\n"
-            "- When the user's request indicates a specific data source or type (e.g., 'meeting', 'Slack', 'YouTube', 'web page', 'PDF'), **populate the `metadata` field with the correct filter(s)**:\n"
-            "    - For meetings, set `metadata` to `{ \"data_input_source\": \"meet_transcript\" }`.\n"
-            "    - For Slack messages, set `metadata` to `{ \"data_input_source\": \"slack\" }`.\n"
-            "    - For YouTube transcripts, set `metadata` to `{ \"data_input_source\": \"yt_transcript\" }`.\n"
-            "    - For web pages, set `metadata` to `{ \"data_input_source\": \"web_page\" }`.\n"
-            "    - For PDFs, set `metadata` to `{ \"data_input_source\": \"pdf\" }`.\n"
-            "- If the prompt mentions a time or date, include content_timestamp in metadata as a range using gte and/or lte keys.."
-            " Example for June 2025: content_timestamp: {\"gte\": \"2025-06-01T00:00:00+05:30\", \"lte\": \"2025-06-30T23:59:59+05:30\"} \n"
-            "**Parameters:**\n"
-            "- `user_prompt` (str): The user's question or search phrase.\n"
-            "- `metadata` (optional, dict): Context or filters such as data source or timestamp.\n\n"
-            "**Returns:**\n"
-            "- List of matching content chunks, with data sources, timestamps, and any available metadata."
+    name="search_matching_chunks",
+    description=("""
+    Description:
+      Semantic search across the user's personal knowledge base (Pensieve).  
+      Works on personal notes and past chats with Ved. 
+      Always pass the user’s question in `user_prompt`.  
+      Optionally add a `metadata` filter to target a specific data source
+      and/or time range.
+    
+    Parameters:
+      user_prompt (str, required)
+          The natural-language query.
+      metadata (dict, optional)
+          Additional filters. Common keys:
+            - data_input_source : str   # available values => "user_typed", "chat"
+            - conversation_id   : str   # mandatory when data_input_source == "chat"
+            - content_timestamp : dict  # {"gte": ISO-8601, "lte": ISO-8601}
+    
+    Returns:
+      List of matching chunks with payload:
+        chunk_content, chunk_data_source, chunk_creation_timestamp,
+        user_ingested_chunk_at, chunk_metadata
+    """
     )
 )
-async def search_pensieve_chunks(
+async def search_matching_chunks(
         ctx: Context,
         user_prompt: str,
         metadata: Optional[dict[str, Any]] = None,
@@ -42,19 +48,52 @@ async def search_pensieve_chunks(
     req = PensieveRequest(user_prompt=user_prompt, user_id=user_id, metadata=metadata)
     try:
         results = await pensieve_service.fetch_matching_chunks(req)
-        if not results:
-            return types.CallToolResult(content=[types.TextContent(type="text", text="No matching content found in Pensieve.")])
-
-        output_lines = []
-        for res in results:
-            meta_str = f"\nMetadata: {res.chunk_metadata}" if res.chunk_metadata else ""
-            output_lines.append(
-                f"- Content: {res.chunk_content}\n"
-                f"  Source: {res.chunk_data_source}\n"
-                f"  Ingested At: {res.user_ingested_chunk_at}\n"
-                f"  Created: {res.chunk_creation_timestamp}{meta_str}"
-            )
-        return types.CallToolResult(content=[types.TextContent(type="text", text="\n\n".join(output_lines))])
+        return await generate_tool_response(results)
     except Exception as e:
         logger.exception("Error searching Pensieve chunks")
         return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+
+
+@server.tool(
+    name="fetch_recent_chat_messages",
+    description=(
+        "Retrieve the latest messages from the **current Ved-user conversation**.\n\n"
+        "Typical triggers: “message above”, “reply to that”, “continue the conversation”, "
+        "“what did we just talk about?”, or any prompt that clearly references the live chat.\n\n"
+        "**Parameters**\n"
+        "• `conversation_id` (str, **required**) – UUID of the chat thread to scan.\n"
+        "• `max_messages` (int, **required**) – Number of most-recent messages to return "
+        "(1 ⇒ newest only).\n\n"
+        "**Returns**\n"
+        "A list of message objects sorted newest ➜ oldest."
+    )
+)
+async def search_chats(
+        ctx: Context,
+        conversation_id: str,
+        max_messages: int
+) -> types.CallToolResult:
+    user_id = await fetch_user_uuid(ctx)
+    req = SearchChatRequest(user_id=user_id, conversation_id=conversation_id, max_messages=max_messages)
+    try:
+        results = await pensieve_service.search_chat(req)
+        return await generate_tool_response(results)
+    except Exception as e:
+        logger.exception("Error searching Pensieve chunks")
+        return types.CallToolResult(isError=True, content=[types.TextContent(type="text", text=str(e))])
+
+
+async def generate_tool_response(results):
+    if not results:
+        return types.CallToolResult(
+            content=[types.TextContent(type="text", text="No matching content found in Pensieve.")])
+    output_lines = []
+    for res in results:
+        meta_str = f"\nMetadata: {res.chunk_metadata}" if res.chunk_metadata else ""
+        output_lines.append(
+            f"- Content: {res.chunk_content}\n"
+            f"  Source: {res.chunk_data_source}\n"
+            f"  Ingested At: {res.user_ingested_chunk_at}\n"
+            f"  Created: {res.chunk_creation_timestamp}{meta_str}"
+        )
+    return types.CallToolResult(content=[types.TextContent(type="text", text="\n\n".join(output_lines))])

@@ -1,10 +1,13 @@
+import json
 from typing import List
 
+from app.config.logging_config import logger
+from app.db.db_processor import fetch_message_data
 from app.dto.pensieve_response import PensieveResponse
 from app.dto.vector_client_response import VectorClientResponse
 from app.enums.input_data_source import InputDataSource
 from app.webclients.pensieve.text_extraction.text_extraction_base import TextExtractionBase
-from app.config.logging_config import logger
+
 
 class ChatDataSourceService(TextExtractionBase):
 
@@ -14,7 +17,7 @@ class ChatDataSourceService(TextExtractionBase):
     async def extract_text_from_vector(self, vector_records: List[VectorClientResponse]):
         message_ids = [vector_record.metadata.get('message_id') for vector_record in vector_records]
         message_records = await fetch_message_data(message_ids)
-        message_dict = {record.message_id: record.content.get('model_response') for record in message_records}
+        message_dict = {str(record.message_id): record.content for record in message_records}
 
         responses = []
         for matching_vector in vector_records:

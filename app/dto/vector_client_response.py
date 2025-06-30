@@ -9,3 +9,5 @@ class VectorClientResponse(BaseModel):
     chunk_ingested_at: datetime
     content_timestamp: datetime
     metadata: Optional[Dict[str, Any]] = None
+    conversation_id: str
+    message_id: str
