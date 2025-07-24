@@ -1,6 +1,4 @@
 
-google_client_id_key = "GOOGLE_CLIENT_ID"
-google_client_secret_key = "GOOGLE_CLIENT_SECRET"
 gmail_service_name = 'gmail'
 gmail_service_version = 'v1'
 gcalendar_service_name = 'calendar'
@@ -19,6 +17,8 @@ default_google_token_uri = 'https://oauth2.googleapis.com/token'
 app_env_key = 'APP_ENV'
 google_token_uri_key = 'GOOGLE_TOKEN_URI'
 db_url_key = 'DATABASE_URL'
+google_client_id_key = "GOOGLE_CLIENT_ID"
+google_client_secret_key = "GOOGLE_CLIENT_SECRET"
 
 # Exceptions
 db_fetch_token_failed= 'Exception while fetching token for user and client'

@@ -12,3 +12,9 @@ cryptography==45.0.3
 asyncpg==0.30.0
 sentence-transformers==4.1.0
 qdrant-client==1.14.2
+fastapi~=0.116.1
+starlette~=0.47.2
+slack_sdk~=3.27.0
+protobuf~=6.31.1
+google-auth-oauthlib~=1.2.2
+slack_sdk~=3.27.0

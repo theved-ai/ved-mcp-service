@@ -47,15 +47,22 @@ mcp-service/
 | **Python**                   | 3.11+   | Async & typing goodies                          |
 | **PostgreSQL**               | 14+     | Persistent store                                |
 | **Qdrant**                   | 1.8+    | Vector DB for Pensieve chunks                   |
-| **Poetry** (or `pip`+`venv`) | latest  | Python deps                                     |
 
 ### 2  Clone & install
 
 ```bash
 git clone git@github.com:theved-ai/ved-mcp-service.git
 cd mcp-service
-cp .env .env                # edit creds & secrets
-poetry install              # or: python -m venv venv && pip install -r requirements.txt
+```
+
+#### 2.1 Environment variables
+Create .env in the repo root:
+
+```
+APP_ENV=local
+DATABASE_URL=postgresql://postgres:secret@localhost:5432/ved_master_db
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
 ```
 
 ### 3  Spin up infrastructure
