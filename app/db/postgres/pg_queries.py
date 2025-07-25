@@ -6,12 +6,12 @@ WHERE user_uuid = $1 AND external_client = $2
 update_token_by_user_id_and_client="""
 UPDATE external_tokens
 SET access_token = $1, refresh_token = $2, expires_at = $3, updated_at = NOW()
-WHERE user_uuid = $4 AND external_client = $5
+WHERE id = $4 AND external_client = $5
 """
 
 fetch_chunk="""
-select uuid, chunk_content from chunked_data
-where uuid = ANY($1)
+select id, chunk_content from chunked_data
+where id = ANY($1)
 """
 
 fetch_message_data="""
