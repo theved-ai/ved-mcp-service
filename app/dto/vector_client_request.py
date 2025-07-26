@@ -10,7 +10,7 @@ def from_pensieve_req(req: PensieveRequest, vector: list[float]):
     return VectorClientRequest(
         collection_name=f"{req.user_id}__{EMBEDDING_MODEL_NAME.replace('/', '_')}",
         query_vector=vector,
-        query_metadata=req.metadata
+        query_metadata=req.metadata or {}
     )
 
 class VectorClientRequest(BaseModel):

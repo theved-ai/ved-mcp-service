@@ -71,7 +71,7 @@ class QdrantVectorClient:
         qdrant_filter = _make_filter(vector_req.query_metadata)
         scored: QueryResponse = await self._client.query_points(
             collection_name=vector_req.collection_name,
-            query_vector=vector_req.query_vector,
+            query=vector_req.query_vector,
             query_filter=qdrant_filter,
             limit=vector_req.max_matching_records,
             with_payload=True,
